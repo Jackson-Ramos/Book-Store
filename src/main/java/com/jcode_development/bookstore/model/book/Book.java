@@ -29,14 +29,11 @@ public class Book implements Serializable {
 	
 	private String title;
 	
-	@OneToOne(mappedBy = "book", cascade = CascadeType.ALL)
-	private Review review;
-	
 	@ManyToOne()
 	@JoinColumn(name = "publisher_id")
 	private Publisher publisher;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany()
 	@JoinTable(
 			name = "books_authors",
 			joinColumns = @JoinColumn(name = "book_id"),
@@ -44,4 +41,6 @@ public class Book implements Serializable {
 	)
 	private Set<Author> authors = new HashSet<>();
 	
+	@OneToOne(mappedBy = "book", cascade = CascadeType.ALL)
+	private Review review;
 }

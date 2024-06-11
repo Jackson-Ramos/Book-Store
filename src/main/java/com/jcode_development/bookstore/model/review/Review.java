@@ -26,9 +26,9 @@ public class Review implements Serializable {
 	
 	private String comment;
 	
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@OneToOne()
 	@JoinColumn(name = "book_id")
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private Book book;
 	
 }
