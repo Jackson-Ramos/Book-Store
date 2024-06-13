@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -26,9 +27,23 @@ public class Author implements Serializable {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private String id;
 	
+	@Column(nullable = false, unique = true)
 	private String name;
 	
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
 	private Set<Book> books = new HashSet<>();
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Author author = (Author) o;
+		return Objects.equals(id, author.id);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(id);
+	}
 }

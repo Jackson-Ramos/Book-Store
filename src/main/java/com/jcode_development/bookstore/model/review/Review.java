@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -24,11 +25,24 @@ public class Review implements Serializable {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private String id;
 	
+	@Column(nullable = false)
 	private String comment;
 	
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	@OneToOne()
+	@OneToOne
 	@JoinColumn(name = "book_id")
 	private Book book;
 	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Review review = (Review) o;
+		return Objects.equals(id, review.id);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(id);
+	}
 }

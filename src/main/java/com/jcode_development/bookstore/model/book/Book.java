@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -27,13 +28,15 @@ public class Book implements Serializable {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private String id;
 	
+	@Column(nullable = false, unique = true)
 	private String title;
 	
-	@ManyToOne()
+	//@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	@ManyToOne//(fetch = FetchType.LAZY)
 	@JoinColumn(name = "publisher_id")
 	private Publisher publisher;
 	
-	@ManyToMany()
+	@ManyToMany
 	@JoinTable(
 			name = "books_authors",
 			joinColumns = @JoinColumn(name = "book_id"),
@@ -43,4 +46,17 @@ public class Book implements Serializable {
 	
 	@OneToOne(mappedBy = "book", cascade = CascadeType.ALL)
 	private Review review;
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Book book = (Book) o;
+		return Objects.equals(id, book.id);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(id);
+	}
 }
