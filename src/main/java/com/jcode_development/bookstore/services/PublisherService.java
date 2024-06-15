@@ -19,8 +19,8 @@ public class PublisherService {
 		this.publisherRepository = publisherRepository;
 	}
 	
-	public ResponseEntity<Void> savePublisher(PublisherRequest publisherRequest){
-		Publisher publisher= new Publisher();
+	public ResponseEntity<Void> savePublisher(PublisherRequest publisherRequest) {
+		Publisher publisher = new Publisher();
 		publisher.setName(publisherRequest.name());
 		publisher.setBooks(new HashSet<>());
 		
@@ -28,7 +28,7 @@ public class PublisherService {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 	
-	public ResponseEntity<Set<Publisher>> getPublishers(){
+	public ResponseEntity<Set<Publisher>> getPublishers() {
 		return ResponseEntity.ok(new HashSet<>(publisherRepository.findAll()));
 	}
 }

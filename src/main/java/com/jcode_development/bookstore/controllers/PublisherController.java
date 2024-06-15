@@ -19,12 +19,12 @@ public class PublisherController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> save(@RequestBody PublisherRequest publisherRequest){
+	public ResponseEntity<Void> save(@RequestBody PublisherRequest publisherRequest) {
 		return publisherService.savePublisher(publisherRequest);
 	}
 	
 	@GetMapping
-	public ResponseEntity<Set<Publisher>> findAll(){
+	public ResponseEntity<Set<Publisher>> findAll() {
 		return publisherService.getPublishers();
 	}
 }

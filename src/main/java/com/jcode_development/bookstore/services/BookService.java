@@ -57,13 +57,13 @@ public class BookService {
 	
 	public ResponseEntity<Set<BookResponse>> getBooks() {
 		var books = Mapper.parseObjects(bookRepository.findAll(), BookResponse.class);
-		for (BookResponse bookResponse: books){
+		for (BookResponse bookResponse : books) {
 			bookResponse.add(linkTo(methodOn(BookController.class).findById(bookResponse.getId())).withSelfRel());
 		}
 		return ResponseEntity.ok(books);
 	}
 	
-	public ResponseEntity<BookResponse> getBook(String id){
+	public ResponseEntity<BookResponse> getBook(String id) {
 		var book = Mapper.parseObject(
 				bookRepository.findById(id).orElseThrow(RuntimeException::new),
 				BookResponse.class);

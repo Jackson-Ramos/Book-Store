@@ -44,7 +44,7 @@ public class AuthorService {
 		return ResponseEntity.ok(authors);
 	}
 	
-	public ResponseEntity<AuthorResponse> getAuthor(String id){
+	public ResponseEntity<AuthorResponse> getAuthor(String id) {
 		var author = authorRepository.findById(id).orElseThrow(RuntimeException::new);
 		return ResponseEntity.ok(
 				Mapper.parseObject(author, AuthorResponse.class)

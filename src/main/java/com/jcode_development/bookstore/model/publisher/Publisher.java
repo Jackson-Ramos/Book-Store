@@ -2,7 +2,6 @@ package com.jcode_development.bookstore.model.publisher;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jcode_development.bookstore.model.book.Book;
-import com.jcode_development.bookstore.model.review.Review;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

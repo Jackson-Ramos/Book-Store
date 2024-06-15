@@ -1,6 +1,5 @@
 package com.jcode_development.bookstore.controllers;
 
-import com.jcode_development.bookstore.model.author.Author;
 import com.jcode_development.bookstore.model.author.AuthorRequest;
 import com.jcode_development.bookstore.model.author.AuthorResponse;
 import com.jcode_development.bookstore.services.AuthorService;
@@ -20,17 +19,17 @@ public class AuthorController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> save(@RequestBody AuthorRequest authorRequest){
+	public ResponseEntity<Void> save(@RequestBody AuthorRequest authorRequest) {
 		return authorService.createAuthor(authorRequest);
 	}
 	
 	@GetMapping
-	public ResponseEntity<Set<AuthorResponse>> findAll(){
+	public ResponseEntity<Set<AuthorResponse>> findAll() {
 		return authorService.getAuthors();
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<AuthorResponse> findById(@PathVariable String id){
+	public ResponseEntity<AuthorResponse> findById(@PathVariable String id) {
 		return authorService.getAuthor(id);
 	}
 }

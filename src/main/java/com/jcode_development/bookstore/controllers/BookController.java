@@ -36,7 +36,7 @@ public class BookController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable String id){
+	public ResponseEntity<Void> delete(@PathVariable String id) {
 		return bookService.deleteBook(id);
 	}
 }
