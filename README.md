@@ -1,6 +1,6 @@
 # Entidades do Sistema:
 
-## Entidade Book.
+### Entidade Book.
 
 A entidade `Book` representa um livro na aplicação e possui os seguintes atributos e relacionamentos:
 
@@ -12,7 +12,7 @@ A entidade `Book` representa um livro na aplicação e possui os seguintes atrib
 | `authors`     | `Set<Author>`       | `@ManyToMany`, `@JoinTable(name = "books_authors", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))` | Autores do livro                               |
 | `review`      | `Review`            | `@OneToOne(mappedBy = "book", cascade = CascadeType.ALL)` | Avaliação do livro                             |
 
-## Entidade Author.
+### Entidade Author.
 
 A entidade `Author` representa um autor na aplicação e possui os seguintes atributos e relacionamentos:
 
@@ -22,7 +22,7 @@ A entidade `Author` representa um autor na aplicação e possui os seguintes atr
 | `name`        | `String`            | `@Column(nullable = false, unique = true)`        | Nome do autor                                  |
 | `books`       | `Set<Book>`         | `@ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)`, `@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)` | Livros associados ao autor                     |
 
-## Entidade Publisher
+### Entidade Publisher
 
 A entidade `Publisher` representa uma editora na aplicação e possui os seguintes atributos e relacionamentos:
 
@@ -32,7 +32,7 @@ A entidade `Publisher` representa uma editora na aplicação e possui os seguint
 | `name`        | `String`            | `@Column(nullable = false, unique = true)`        | Nome da editora                                |
 | `books`       | `Set<Book>`         | `@OneToMany(mappedBy = "publisher", fetch = FetchType.LAZY)`, `@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)` | Livros publicados pela editora                 |
 
-## Entidade Review
+### Entidade Review
 
 A entidade `Review` representa uma avaliação de um livro na aplicação e possui os seguintes atributos e relacionamentos:
 
