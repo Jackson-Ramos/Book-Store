@@ -71,4 +71,10 @@ public class BookService {
 		return ResponseEntity.ok(book);
 	}
 	
+	@Transactional
+	public ResponseEntity<Void> deleteBook(String id) {
+		var book = bookRepository.findById(id).orElseThrow(RuntimeException::new);
+		bookRepository.delete(book);
+		return ResponseEntity.noContent().build();
+	}
 }
