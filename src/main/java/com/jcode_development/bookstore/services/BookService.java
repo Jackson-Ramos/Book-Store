@@ -1,12 +1,14 @@
 package com.jcode_development.bookstore.services;
 
+import com.jcode_development.bookstore.controllers.BookController;
+import com.jcode_development.bookstore.mapper.Mapper;
 import com.jcode_development.bookstore.model.book.Book;
 import com.jcode_development.bookstore.model.book.BookRequest;
+import com.jcode_development.bookstore.model.book.BookResponse;
 import com.jcode_development.bookstore.model.review.Review;
 import com.jcode_development.bookstore.repositories.AuthorRepository;
 import com.jcode_development.bookstore.repositories.BookRepository;
 import com.jcode_development.bookstore.repositories.PublisherRepository;
-import com.jcode_development.bookstore.repositories.ReviewRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class BookService {
@@ -50,8 +55,20 @@ public class BookService {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 	
-	public ResponseEntity<Set<Book>> getBooks(){
-		return ResponseEntity.ok(new HashSet<>(bookRepository.findAll()));
+	public ResponseEntity<Set<BookResponse>> getBooks() {
+		var books = Mapper.parseObjects(bookRepository.findAll(), BookResponse.class);
+		for (BookResponse bookResponse: books){
+			bookResponse.add(linkTo(methodOn(BookController.class).findById(bookResponse.getId())).withSelfRel());
+		}
+		return ResponseEntity.ok(books);
+	}
+	
+	public ResponseEntity<BookResponse> getBook(String id){
+		var book = Mapper.parseObject(
+				bookRepository.findById(id).orElseThrow(RuntimeException::new),
+				BookResponse.class);
+		book.add(linkTo(methodOn(BookController.class).findAll()).withRel("All books"));
+		return ResponseEntity.ok(book);
 	}
 	
 }

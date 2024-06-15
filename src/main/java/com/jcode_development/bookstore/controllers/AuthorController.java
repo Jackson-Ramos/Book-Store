@@ -2,6 +2,7 @@ package com.jcode_development.bookstore.controllers;
 
 import com.jcode_development.bookstore.model.author.Author;
 import com.jcode_development.bookstore.model.author.AuthorRequest;
+import com.jcode_development.bookstore.model.author.AuthorResponse;
 import com.jcode_development.bookstore.services.AuthorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,12 @@ public class AuthorController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<Set<Author>> findAll(){
+	public ResponseEntity<Set<AuthorResponse>> findAll(){
 		return authorService.getAuthors();
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<AuthorResponse> findById(@PathVariable String id){
+		return authorService.getAuthor(id);
 	}
 }
