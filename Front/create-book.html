@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookstore - Create Book</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Create a New Book</h2>
+    <form id="bookForm">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+        
+        <label for="publisherId">Publisher ID:</label><br>
+        <input type="text" id="publisherId" name="publisherId" required><br><br>
+        
+        <label for="author1">Author 1 ID:</label><br>
+        <input type="text" id="author1" name="authorsIds" required><br>
+        
+        <label for="author2">Author 2 ID:</label><br>
+        <input type="text" id="author2" name="authorsIds"><br><br>
+        
+        <label for="review">Review:</label><br>
+        <textarea id="review" name="review"></textarea><br><br>
+        
+        <input type="submit" value="Create Book">
+        <button type="button" onclick="goToIndexPage()">Back to Home</button>
+    </form>
+
+    <script src="script.js"></script>
+    <script>
+        // Função para redirecionar para a página inicial
+        function goToIndexPage() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

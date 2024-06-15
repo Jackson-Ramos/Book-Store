@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookstore - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .books-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-around;
+            padding: 20px;
+        }
+        .book-card {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 8px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra discreta */
+            transition: box-shadow 0.3s ease; /* Transição suave ao passar o mouse */
+        }
+        .book-card:hover {
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Aumenta a sombra ao passar o mouse */
+        }
+        .book-card h3 {
+            margin-top: 0;
+        }
+        .book-card p {
+            margin-bottom: 5px;
+        }
+        .create-book-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="books-container" id="booksContainer"></div>
+
+    <button class="create-book-btn" id="createBookBtn">Create New Book</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
