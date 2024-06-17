@@ -79,7 +79,7 @@ public class BookService {
 	}
 	
 	@Transactional
-	public ResponseEntity<Void> updateBook(String id, BookRequest bookRequest){
+	public ResponseEntity<Void> updateBook(String id, BookRequest bookRequest) {
 		var book = bookRepository.findById(id).orElseThrow(RuntimeException::new);
 		book.setTitle(bookRequest.title());
 		book.setPublisher(publisherRepository.findById(bookRequest.publisherId()).orElse(null));

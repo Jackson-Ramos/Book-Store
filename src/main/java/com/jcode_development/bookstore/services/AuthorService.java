@@ -51,4 +51,17 @@ public class AuthorService {
 						.add(linkTo(methodOn(AuthorController.class).findAll()).withSelfRel())
 		);
 	}
+	
+	public ResponseEntity<Void> updateAuthor(String id, AuthorRequest authorRequest) {
+		var author = authorRepository.findById(id).orElseThrow(RuntimeException::new);
+		author.setName(authorRequest.name());
+		authorRepository.save(author);
+		return ResponseEntity.ok().build();
+	}
+	
+	public ResponseEntity<Void> deleteAuthor(String id) {
+		var author = authorRepository.findById(id).orElseThrow(RuntimeException::new);
+		authorRepository.delete(author);
+		return ResponseEntity.noContent().build();
+	}
 }

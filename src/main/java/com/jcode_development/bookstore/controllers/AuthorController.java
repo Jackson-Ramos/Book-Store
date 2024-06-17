@@ -32,4 +32,14 @@ public class AuthorController {
 	public ResponseEntity<AuthorResponse> findById(@PathVariable String id) {
 		return authorService.getAuthor(id);
 	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<Void> update(@PathVariable String id, @RequestBody AuthorRequest authorRequest){
+		return authorService.updateAuthor(id, authorRequest);
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> delete(@PathVariable String id) {
+		return authorService.deleteAuthor(id);
+	}
 }
