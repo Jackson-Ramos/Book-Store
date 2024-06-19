@@ -1,5 +1,6 @@
 package com.jcode_development.bookstore.services;
 
+import com.jcode_development.bookstore.exceptions.ResourceNotFound;
 import com.jcode_development.bookstore.mapper.Mapper;
 import com.jcode_development.bookstore.model.publisher.Publisher;
 import com.jcode_development.bookstore.model.publisher.PublisherRequest;
@@ -35,19 +36,19 @@ public class PublisherService {
 	}
 	
 	public ResponseEntity<PublisherResponse> getPublisher(String id) {
-		var publisher = publisherRepository.findById(id).orElseThrow(RuntimeException::new);
+		var publisher = publisherRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Id: " + id + " Not Found"));
 		return ResponseEntity.ok(Mapper.parseObject(publisher, PublisherResponse.class));
 	}
 	
 	public ResponseEntity<Void> updatePublisher(String id, PublisherRequest publisherRequest) {
-		var publisher = publisherRepository.findById(id).orElseThrow(RuntimeException::new);
+		var publisher = publisherRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Id: " + id + " Not Found"));
 		publisher.setName(publisherRequest.name());
 		publisherRepository.save(publisher);
 		return ResponseEntity.ok().build();
 	}
 	
 	public ResponseEntity<Void> delete(String id) {
-		var publisher = publisherRepository.findById(id).orElseThrow(RuntimeException::new);
+		var publisher = publisherRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Id: " + id + " Not Found"));
 		publisherRepository.delete(publisher);
 		return ResponseEntity.noContent().build();
 	}

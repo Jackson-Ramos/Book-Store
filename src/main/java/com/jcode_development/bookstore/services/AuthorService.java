@@ -1,6 +1,7 @@
 package com.jcode_development.bookstore.services;
 
 import com.jcode_development.bookstore.controllers.AuthorController;
+import com.jcode_development.bookstore.exceptions.ResourceNotFound;
 import com.jcode_development.bookstore.mapper.Mapper;
 import com.jcode_development.bookstore.model.author.Author;
 import com.jcode_development.bookstore.model.author.AuthorRequest;
@@ -45,7 +46,7 @@ public class AuthorService {
 	}
 	
 	public ResponseEntity<AuthorResponse> getAuthor(String id) {
-		var author = authorRepository.findById(id).orElseThrow(RuntimeException::new);
+		var author = authorRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Id: " + id + " Not Found"));
 		return ResponseEntity.ok(
 				Mapper.parseObject(author, AuthorResponse.class)
 						.add(linkTo(methodOn(AuthorController.class).findAll()).withSelfRel())
@@ -53,14 +54,14 @@ public class AuthorService {
 	}
 	
 	public ResponseEntity<Void> updateAuthor(String id, AuthorRequest authorRequest) {
-		var author = authorRepository.findById(id).orElseThrow(RuntimeException::new);
+		var author = authorRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Id: " + id + " Not Found"));
 		author.setName(authorRequest.name());
 		authorRepository.save(author);
 		return ResponseEntity.ok().build();
 	}
 	
 	public ResponseEntity<Void> deleteAuthor(String id) {
-		var author = authorRepository.findById(id).orElseThrow(RuntimeException::new);
+		var author = authorRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Id: " + id + " Not Found"));
 		authorRepository.delete(author);
 		return ResponseEntity.noContent().build();
 	}

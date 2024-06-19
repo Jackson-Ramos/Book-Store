@@ -1,6 +1,7 @@
 package com.jcode_development.bookstore.services;
 
 import com.jcode_development.bookstore.controllers.BookController;
+import com.jcode_development.bookstore.exceptions.ResourceNotFound;
 import com.jcode_development.bookstore.mapper.Mapper;
 import com.jcode_development.bookstore.model.book.Book;
 import com.jcode_development.bookstore.model.book.BookRequest;
@@ -65,7 +66,7 @@ public class BookService {
 	
 	public ResponseEntity<BookResponse> getBook(String id) {
 		var book = Mapper.parseObject(
-				bookRepository.findById(id).orElseThrow(RuntimeException::new),
+				bookRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Id: " + id + " Not Found")),
 				BookResponse.class);
 		book.add(linkTo(methodOn(BookController.class).findAll()).withRel("All books"));
 		return ResponseEntity.ok(book);
@@ -73,14 +74,14 @@ public class BookService {
 	
 	@Transactional
 	public ResponseEntity<Void> deleteBook(String id) {
-		var book = bookRepository.findById(id).orElseThrow(RuntimeException::new);
+		var book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Id: " + id + " Not Found"));
 		bookRepository.delete(book);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@Transactional
 	public ResponseEntity<Void> updateBook(String id, BookRequest bookRequest) {
-		var book = bookRepository.findById(id).orElseThrow(RuntimeException::new);
+		var book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Id: " + id + " Not Found"));
 		book.setTitle(bookRequest.title());
 		book.setPublisher(publisherRepository.findById(bookRequest.publisherId()).orElse(null));
 		book.setAuthors(new HashSet<>(authorRepository.findAllById(bookRequest.authorsIds())));
