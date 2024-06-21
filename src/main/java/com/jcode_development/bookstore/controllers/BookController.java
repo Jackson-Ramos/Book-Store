@@ -20,28 +20,50 @@ public class BookController {
 		this.bookService = bookService;
 	}
 	
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(
+			consumes = {
+					MediaType.APPLICATION_JSON_VALUE,
+					MediaType.APPLICATION_XML_VALUE
+			}
+	)
 	public ResponseEntity<Void> save(@RequestBody BookRequest bookRequest) {
 		return bookService.createBook(bookRequest);
 	}
 	
-	@GetMapping
+	@GetMapping(
+			produces = {
+					MediaType.APPLICATION_JSON_VALUE,
+					MediaType.APPLICATION_XML_VALUE
+			}
+	)
 	public ResponseEntity<Set<BookResponse>> findAll() {
 		return bookService.getBooks();
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping(
+			value = "/{id}",
+			produces = {
+					MediaType.APPLICATION_JSON_VALUE,
+					MediaType.APPLICATION_XML_VALUE
+			}
+	)
 	public ResponseEntity<BookResponse> findById(@PathVariable String id) {
 		return bookService.getBook(id);
+	}
+	
+	@PutMapping(
+			value = "/{id}",
+			consumes = {
+					MediaType.APPLICATION_JSON_VALUE,
+					MediaType.APPLICATION_XML_VALUE
+			}
+	)
+	public ResponseEntity<Void> update(@PathVariable String id, @RequestBody BookRequest bookRequest) {
+		return bookService.updateBook(id, bookRequest);
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable String id) {
 		return bookService.deleteBook(id);
-	}
-	
-	@PutMapping("/{id}")
-	public ResponseEntity<Void> update(@PathVariable String id, @RequestBody BookRequest bookRequest) {
-		return bookService.updateBook(id, bookRequest);
 	}
 }
