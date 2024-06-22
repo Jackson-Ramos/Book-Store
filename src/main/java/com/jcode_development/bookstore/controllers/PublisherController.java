@@ -4,6 +4,7 @@ import com.jcode_development.bookstore.model.publisher.Publisher;
 import com.jcode_development.bookstore.model.publisher.PublisherRequest;
 import com.jcode_development.bookstore.model.publisher.PublisherResponse;
 import com.jcode_development.bookstore.services.PublisherService;
+import com.jcode_development.bookstore.swagger.PublisherDocumentation;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/store/publisher")
-public class PublisherController {
+public class PublisherController implements PublisherDocumentation {
 	
 	private final PublisherService publisherService;
 	
@@ -36,7 +37,7 @@ public class PublisherController {
 					MediaType.APPLICATION_XML_VALUE
 			}
 	)
-	public ResponseEntity<Set<Publisher>> findAll() {
+	public ResponseEntity<Set<PublisherResponse>> findAll() {
 		return publisherService.getPublishers();
 	}
 	

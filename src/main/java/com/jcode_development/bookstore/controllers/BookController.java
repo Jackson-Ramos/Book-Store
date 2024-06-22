@@ -3,6 +3,7 @@ package com.jcode_development.bookstore.controllers;
 import com.jcode_development.bookstore.model.book.BookRequest;
 import com.jcode_development.bookstore.model.book.BookResponse;
 import com.jcode_development.bookstore.services.BookService;
+import com.jcode_development.bookstore.swagger.BookDocumentation;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/store/book")
-public class BookController {
+public class BookController implements BookDocumentation {
 	
 	private final BookService bookService;
 	

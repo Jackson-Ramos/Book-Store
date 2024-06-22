@@ -1,5 +1,5 @@
 server:
-  port: 8888
+  port: 8080
 cors:
   originPatterns: http://localhost:3000,http://localhost:8080
 spring:
@@ -16,3 +16,7 @@ spring:
         hibernate:
           dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
+springdoc:
+  pathsToMatch: /store/**
+  swagger-ui:
+    use-root-path: true
