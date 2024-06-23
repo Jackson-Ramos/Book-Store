@@ -1,7 +1,7 @@
 package com.jcode_development.bookstore.model.book;
 
-import com.jcode_development.bookstore.model.author.Author;
-import com.jcode_development.bookstore.model.publisher.Publisher;
+import com.jcode_development.bookstore.model.author.AuthorResponse;
+import com.jcode_development.bookstore.model.publisher.PublisherResponse;
 import com.jcode_development.bookstore.model.review.Review;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +22,7 @@ public class BookResponse extends RepresentationModel<BookResponse> implements S
 	
 	private String id;
 	private String title;
-	private Publisher publisher;
-	private Set<Author> authors;
+	private PublisherResponse publisher;
+	private Set<AuthorResponse> authors;
 	private Review review;
 }
