@@ -1,6 +1,7 @@
 package com.jcode_development.bookstore.exceptions.handler;
 
 import com.jcode_development.bookstore.exceptions.ExceptionResponse;
+import com.jcode_development.bookstore.exceptions.InvalidJwtAuthenticationException;
 import com.jcode_development.bookstore.exceptions.ResourceNotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,5 +34,14 @@ public class RestExceptionHandler {
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
 	
+	@ExceptionHandler(InvalidJwtAuthenticationException.class)
+	public ResponseEntity<ExceptionResponse> InvalidJwtAuthenticationExceptionHandler(Exception exception, WebRequest request){
+		ExceptionResponse response = new ExceptionResponse(
+				new Date(),
+				exception.getMessage(),
+				request.getDescription(false)
+		);
+		return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+	}
 	
 }

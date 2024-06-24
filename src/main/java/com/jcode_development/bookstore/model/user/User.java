@@ -9,8 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -29,38 +28,13 @@ public class User implements UserDetails, Serializable {
 	@Column(name = "user_name")
 	private String userName;
 	
-	@Column(name = "full_name")
-	private String fullName;
-	
 	@Column(name = "password")
 	private String password;
 	
-	@Column(name = "account_non_expired")
-	private Boolean accountNonExpired;
-	
-	@Column(name = "account_non_locked")
-	private Boolean accountNonLocked;
-	
-	@Column(name = "credentials_non_expired")
-	private Boolean credentialsNonExpired;
-	
-	@Column(name = "enabled")
-	private Boolean enabled;
-	
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "user_permission", joinColumns = {@JoinColumn (name = "id_user")},
-			inverseJoinColumns = {@JoinColumn (name = "id_permission")}
-	)
-	private List<Permission> permissions;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return List.of();
-	}
-	
-	@Override
-	public String getPassword() {
-		return this.password;
 	}
 	
 	@Override
@@ -70,21 +44,21 @@ public class User implements UserDetails, Serializable {
 	
 	@Override
 	public boolean isAccountNonExpired() {
-		return this.accountNonExpired;
+		return true;
 	}
 	
 	@Override
 	public boolean isAccountNonLocked() {
-		return this.accountNonLocked;
+		return true;
 	}
 	
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return this.credentialsNonExpired;
+		return true;
 	}
 	
 	@Override
 	public boolean isEnabled() {
-		return this.enabled;
+		return true;
 	}
 }

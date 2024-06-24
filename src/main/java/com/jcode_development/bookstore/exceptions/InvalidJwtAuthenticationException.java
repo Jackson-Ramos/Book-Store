@@ -1,0 +1,19 @@
+package com.jcode_development.bookstore.exceptions;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.io.Serial;
+import java.io.Serializable;
+
+@ResponseStatus(HttpStatus.FORBIDDEN)
+public class InvalidJwtAuthenticationException extends AuthenticationException implements Serializable {
+	
+	@Serial
+	private static final long serialVersionUID = -1845000154714818504L;
+	
+	public InvalidJwtAuthenticationException(String message) {
+		super(message);
+	}
+}
