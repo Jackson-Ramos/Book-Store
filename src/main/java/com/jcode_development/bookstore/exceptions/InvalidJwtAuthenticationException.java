@@ -9,10 +9,10 @@ import java.io.Serializable;
 
 @ResponseStatus(HttpStatus.FORBIDDEN)
 public class InvalidJwtAuthenticationException extends AuthenticationException implements Serializable {
-	
+
 	@Serial
 	private static final long serialVersionUID = -1845000154714818504L;
-	
+
 	public InvalidJwtAuthenticationException(String message) {
 		super(message);
 	}
