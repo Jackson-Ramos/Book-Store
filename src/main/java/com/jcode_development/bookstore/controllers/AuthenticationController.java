@@ -6,6 +6,7 @@ import com.jcode_development.bookstore.model.user.security.RegisterCredentials;
 import com.jcode_development.bookstore.model.user.security.TokenResponse;
 import com.jcode_development.bookstore.repositories.UserRepository;
 import com.jcode_development.bookstore.security.JwtTokenProvider;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,15 +24,19 @@ public class AuthenticationController {
 	private final AuthenticationManager authenticationManager;
 	private final JwtTokenProvider jwtTokenProvider;
 	
-	public AuthenticationController(UserRepository userRepository, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+	public AuthenticationController(
+			UserRepository userRepository,
+			AuthenticationManager authenticationManager,
+			JwtTokenProvider jwtTokenProvider
+	) {
 		this.userRepository = userRepository;
 		this.authenticationManager = authenticationManager;
 		this.jwtTokenProvider = jwtTokenProvider;
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<TokenResponse> login(@RequestBody AccountCredentials credentials) {
-		var usernamePassword = new UsernamePasswordAuthenticationToken(credentials.username(), credentials.password());
+	public ResponseEntity<TokenResponse> login(@RequestBody @Valid AccountCredentials data){
+		var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
 		var auth = this.authenticationManager.authenticate(usernamePassword);
 		
 		var token = jwtTokenProvider.generateToken((User) auth.getPrincipal());
@@ -40,15 +45,15 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/register")
-	public ResponseEntity<Void> register(@RequestBody RegisterCredentials credentials) {
-		if (this.userRepository.findByUsername(credentials.username()) != null) {
+	public ResponseEntity<Void> register(@RequestBody RegisterCredentials data) {
+		if (this.userRepository.findByUsername(data.username()) != null) {
 			return ResponseEntity.badRequest().build();
 		}
-		String encryptedPassword = new BCryptPasswordEncoder().encode(credentials.password());
+		String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
 		User newUser = new User();
-		newUser.setUserName(credentials.username());
+		newUser.setUserName(data.username());
 		newUser.setPassword(encryptedPassword);
-		newUser.setRole(credentials.role());
+		newUser.setRole(data.role());
 		
 		this.userRepository.save(newUser);
 		return ResponseEntity.ok().build();

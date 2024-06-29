@@ -32,6 +32,8 @@ public class User implements UserDetails, Serializable {
 	@Column(name = "password")
 	private String password;
 	
+	@Column()
+	@Enumerated(EnumType.STRING)
 	private UserRole role;
 	
 	@Override

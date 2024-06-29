@@ -15,17 +15,17 @@ import java.util.Date;
 @Service
 public class JwtTokenProvider {
 	
-	@Value("${security.jwt.token.secret-key:}")
+	@Value("${security.jwt.token.secret-key}")
 	private String secretKey;
 	
 	@Value("${security.jwt.token.expire-length:3600000}")
 	private Long validateInMilliseconds = 3600000L;
 	
 	public String generateToken(User user) {
-		Algorithm algorithm = Algorithm.HMAC256(secretKey);
-		String issuerUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
-		Date now = new Date();
 		try {
+			Algorithm algorithm = Algorithm.HMAC256(secretKey);
+			String issuerUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+			Date now = new Date();
 			return JWT.create()
 					.withIssuer(issuerUrl)
 					.withSubject(user.getUsername())
@@ -33,14 +33,14 @@ public class JwtTokenProvider {
 					.sign(algorithm);
 			
 		} catch (JWTCreationException exception) {
-			throw new RuntimeException("Error while generating token", exception);
+			throw new RuntimeException("Error while generating token");
 		}
 	}
 	
 	public String validateToken(String token) {
-		Algorithm algorithm = Algorithm.HMAC256(secretKey);
-		String issuerUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
 		try {
+			Algorithm algorithm = Algorithm.HMAC256(secretKey);
+			String issuerUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
 			return JWT.require(algorithm)
 					.withIssuer(issuerUrl)
 					.build()

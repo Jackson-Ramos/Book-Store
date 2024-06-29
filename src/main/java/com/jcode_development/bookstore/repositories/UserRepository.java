@@ -1,9 +1,9 @@
 package com.jcode_development.bookstore.repositories;
 
 import com.jcode_development.bookstore.model.user.User;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, String> {
 	
 	@Query("SELECT u FROM User u WHERE u.userName = :userName")
-	UserDetails findByUsername(@Value("username") String userName);
-	
-	
+	UserDetails findByUsername(@Param("userName") String username);
 }
