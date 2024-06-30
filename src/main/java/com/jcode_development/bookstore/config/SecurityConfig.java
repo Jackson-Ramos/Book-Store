@@ -39,6 +39,8 @@ public class SecurityConfig {
 						.anyRequest().authenticated()
 				)
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+				.cors(cors -> {
+				})
 				.build();
 	}
 	
