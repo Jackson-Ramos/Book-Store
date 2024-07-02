@@ -8,9 +8,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
-
-import java.util.Set;
 
 @Tag(name = "Books", description = "Operations related to books in the bookstore")
 public interface BookDocumentation {
@@ -39,7 +40,7 @@ public interface BookDocumentation {
 					@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
 			}
 	)
-	ResponseEntity<Set<BookResponse>> findAll();
+	ResponseEntity<PagedModel<EntityModel<BookResponse>>> findAll(Integer page, Integer limit, String direction);
 	
 	@Operation(
 			summary = "Find book by ID",

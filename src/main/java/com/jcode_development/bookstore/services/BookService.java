@@ -11,12 +11,16 @@ import com.jcode_development.bookstore.repositories.AuthorRepository;
 import com.jcode_development.bookstore.repositories.BookRepository;
 import com.jcode_development.bookstore.repositories.PublisherRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.Set;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -27,17 +31,18 @@ public class BookService {
 	private final AuthorRepository authorRepository;
 	private final BookRepository bookRepository;
 	private final PublisherRepository publisherRepository;
+	private final PagedResourcesAssembler<BookResponse> assembler;
 	
 	
 	public BookService(
 			AuthorRepository authorRepository,
 			BookRepository bookRepository,
-			PublisherRepository publisherRepository
-	) {
+			PublisherRepository publisherRepository,
+			PagedResourcesAssembler<BookResponse> assembler) {
 		this.authorRepository = authorRepository;
 		this.bookRepository = bookRepository;
 		this.publisherRepository = publisherRepository;
-		
+		this.assembler = assembler;
 	}
 	
 	@Transactional
@@ -56,19 +61,24 @@ public class BookService {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 	
-	public ResponseEntity<Set<BookResponse>> getBooks() {
-		var books = Mapper.parseObjects(bookRepository.findAll(), BookResponse.class);
-		for (BookResponse bookResponse : books) {
-			bookResponse.add(linkTo(methodOn(BookController.class).findById(bookResponse.getId())).withSelfRel());
-		}
-		return ResponseEntity.ok(books);
+	public PagedModel<EntityModel<BookResponse>> getBooks(Pageable pageable) {
+		
+		var bookPage = bookRepository.findAll(pageable);
+		var bookResponsePage = bookPage.map(b -> Mapper.parseObject(b, BookResponse.class));
+		
+		bookResponsePage.forEach(book -> book.add(linkTo(methodOn(BookController.class).findById(book.getId())).withSelfRel()));
+		
+		Link link = linkTo(
+				methodOn(BookController.class)
+						.findAll(pageable.getPageNumber(), pageable.getPageSize(), "asc")).withSelfRel();
+		return assembler.toModel(bookResponsePage, link);
 	}
 	
 	public ResponseEntity<BookResponse> getBook(String id) {
 		var book = Mapper.parseObject(
 				bookRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Id: " + id + " Not Found")),
 				BookResponse.class);
-		book.add(linkTo(methodOn(BookController.class).findAll()).withRel("All books"));
+		book.add(linkTo(methodOn(BookController.class).findById(book.getId())).withSelfRel());
 		return ResponseEntity.ok(book);
 	}
 	

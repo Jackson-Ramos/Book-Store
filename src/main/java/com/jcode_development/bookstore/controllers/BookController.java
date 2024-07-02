@@ -4,11 +4,15 @@ import com.jcode_development.bookstore.model.book.BookRequest;
 import com.jcode_development.bookstore.model.book.BookResponse;
 import com.jcode_development.bookstore.services.BookService;
 import com.jcode_development.bookstore.swagger.BookDocumentation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Set;
 
 @RestController
 @RequestMapping("/store/book")
@@ -36,8 +40,15 @@ public class BookController implements BookDocumentation {
 					MediaType.APPLICATION_XML_VALUE
 			}
 	)
-	public ResponseEntity<Set<BookResponse>> findAll() {
-		return bookService.getBooks();
+	public ResponseEntity<PagedModel<EntityModel<BookResponse>>> findAll(
+			@RequestParam(value = "page", defaultValue = "0") Integer page,
+			@RequestParam(value = "size", defaultValue = "10") Integer size,
+			@RequestParam(value = "direction", defaultValue = "asc") String direction) {
+		
+		var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+		
+		Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "title"));
+		return ResponseEntity.ok(bookService.getBooks(pageable));
 	}
 	
 	@GetMapping(
