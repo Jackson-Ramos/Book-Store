@@ -6,7 +6,8 @@ import com.jcode_development.bookstore.model.user.security.RegisterCredentials;
 import com.jcode_development.bookstore.model.user.security.TokenResponse;
 import com.jcode_development.bookstore.repositories.UserRepository;
 import com.jcode_development.bookstore.security.JwtTokenProvider;
-import jakarta.validation.Valid;
+import com.jcode_development.bookstore.swagger.AuthenticationDocumentation;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthenticationController {
+public class AuthenticationController implements AuthenticationDocumentation {
 	
 	private final UserRepository userRepository;
 	private final AuthenticationManager authenticationManager;
@@ -34,8 +35,8 @@ public class AuthenticationController {
 		this.jwtTokenProvider = jwtTokenProvider;
 	}
 	
-	@PostMapping("/login")
-	public ResponseEntity<TokenResponse> login(@RequestBody @Valid AccountCredentials data){
+	@PostMapping(value = "/login", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public ResponseEntity<TokenResponse> login(@RequestBody AccountCredentials data) {
 		var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
 		var auth = this.authenticationManager.authenticate(usernamePassword);
 		
@@ -44,7 +45,7 @@ public class AuthenticationController {
 		return ResponseEntity.ok(new TokenResponse(token));
 	}
 	
-	@PostMapping("/register")
+	@PostMapping(value = "/register", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<Void> register(@RequestBody RegisterCredentials data) {
 		if (this.userRepository.findByUsername(data.username()) != null) {
 			return ResponseEntity.badRequest().build();
